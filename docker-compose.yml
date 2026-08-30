@@ -1,0 +1,48 @@
+services:
+  api:
+    build: 
+      context: .
+      args:
+        EMAIL_PASSWORD: ${EMAIL_PASSWORD}
+        DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=${DB_CONNECTION_STRING}
+      - Jwt__Secret=${JWT_SECRET}
+      - EmailSettings__Password=${EMAIL_PASSWORD}
+    volumes:
+      - dp_keys:/home/appuser/.aspnet/DataProtection-Keys
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    healthcheck:
+      test: ["CMD-SHELL","pg_isready -U ${DB_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+  dp_keys:
