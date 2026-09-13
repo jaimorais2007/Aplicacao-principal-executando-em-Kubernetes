@@ -1,5 +1,6 @@
 export const CONFIG = {
-  BASE_URL: __ENV.BASE_URL || 'http://localhost:5000',
+  BASE_URL: __ENV.BASE_URL || 'https://yq54i0166m.execute-api.us-east-1.amazonaws.com',
+  ADMIN_CPF: __ENV.ADMIN_CPF || '81093231033',
   ADMIN_EMAIL: __ENV.ADMIN_EMAIL || 'admin@gmail.com',
   ADMIN_PASSWORD: __ENV.ADMIN_PASSWORD || '123',
   DELAYS: {

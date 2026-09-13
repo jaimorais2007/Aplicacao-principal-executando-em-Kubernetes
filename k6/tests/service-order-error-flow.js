@@ -36,8 +36,8 @@ export const options = {
  * Faz login como administrador e cria dados de suporte válidos para os testes de transição.
  */
 export function setup() {
-  console.log(`[SETUP] Conectando a ${CONFIG.BASE_URL} com ${CONFIG.ADMIN_EMAIL}...`);
-  const auth = login(CONFIG.BASE_URL, CONFIG.ADMIN_EMAIL, CONFIG.ADMIN_PASSWORD);
+  console.log(`[SETUP] Conectando a ${CONFIG.BASE_URL} com CPF ${CONFIG.ADMIN_CPF}...`);
+  const auth = login(CONFIG.BASE_URL, CONFIG.ADMIN_CPF);
   console.log('[SETUP] Login realizado com sucesso. Criando dados de suporte...');
 
   const supportOptions = setupSupportData(CONFIG.BASE_URL, auth.headers);

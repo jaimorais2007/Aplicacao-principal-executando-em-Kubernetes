@@ -4,20 +4,21 @@ import { check } from 'k6';
 /**
  * Realiza autenticação com a API e retorna o token JWT e os headers de autorização
  * @param {string} baseUrl
- * @param {string} email
- * @param {string} password
+ * @param {string} [cpf='81093231033']
  * @returns {{ token: string, headers: object }}
  */
-export function login(baseUrl, email, password) {
-  const url = `${baseUrl}/api/auth/login`;
+export function login(baseUrl, cpf = '81093231033') {
+  const cleanBaseUrl = baseUrl ? baseUrl.replace(/\/+$/, '') : 'https://yq54i0166m.execute-api.us-east-1.amazonaws.com';
+  const url = `${cleanBaseUrl}/authenticate`;
+  const effectiveCpf = (typeof cpf === 'string' && cpf.includes('@')) ? '81093231033' : (cpf || '81093231033');
+
   const payload = JSON.stringify({
-    email: email,
-    password: password,
+    cpf: effectiveCpf,
   });
 
   const params = {
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'text/plain',
     },
   };
 
@@ -36,7 +37,7 @@ export function login(baseUrl, email, password) {
   });
 
   if (!loginSuccess) {
-    throw new Error(`Falha no login com ${email}. Status: ${res.status}, Resposta: ${res.body}`);
+    throw new Error(`Falha no login com CPF ${effectiveCpf}. Status: ${res.status}, Resposta: ${res.body}`);
   }
 
   const responseBody = JSON.parse(res.body);
