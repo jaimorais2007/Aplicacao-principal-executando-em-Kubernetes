@@ -61,7 +61,6 @@ jobs:
           push: true
           tags: ${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}, ${{ env.DOCKER_IMAGE_NAME }}:latest
           build-args: |
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
             EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
             DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}
             OTEL_EXPORTER_OTLP_HEADERS=${{ secrets.OTEL_EXPORTER_OTLP_HEADERS }}
